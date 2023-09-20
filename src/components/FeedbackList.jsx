@@ -3,22 +3,22 @@ import { useContext } from "react"
 import React from 'react'
 import FeedbackItem from './FeedbackItem'
 import FeedbackContext from "../context/FeedbackContext"
+import Spinner from "./shared/Spinner"
 
 
 const FeedbackList = () => {
-  const {feedback}=useContext(FeedbackContext)
+  const {feedback,isLoading}=useContext(FeedbackContext)
   const {deleteFeedback}=useContext(FeedbackContext)
   const handleFeedbackDelete=(id)=>{
     deleteFeedback(id)
   }
-   
-  if(!feedback || feedback.length===0){
+  if(!isLoading && (!feedback || feedback.length===0)){
     return(
       <p>No Feedback yet</p>
     )
   }
-  return (
-    <div className='feedback-list'>
+   return isLoading ? <Spinner/> :(
+      <div className='feedback-list'>
       <AnimatePresence>
       {feedback.map((feedback)=>{
         return(
@@ -34,7 +34,7 @@ const FeedbackList = () => {
       })}
       </AnimatePresence>
     </div>
-  )
+   )
 }
 
 export default FeedbackList
